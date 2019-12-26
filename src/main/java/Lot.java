@@ -2,13 +2,12 @@ public class Lot {
 
     private int lotId;
     private int price;
-    private boolean isPaid;
+    private boolean isPaid = false;
 
-    public Lot(int lotId, int price, boolean isPaid) {
+    public Lot(int lotId, int price) {
         super();
         this.lotId = lotId;
         this.price = price;
-        this.isPaid = isPaid;
     }
     public int getLotId() {
         return lotId;
