@@ -3,7 +3,7 @@ import java.util.concurrent.Phaser;
 
 public class Auction {
 
-    public static final Phaser AUCTION = new Phaser();
+    public static final Phaser AUCTION = new Phaser(3);
     public static final int PRICE_PATH = 100;
 
 //        auction.register();
