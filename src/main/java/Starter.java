@@ -1,4 +1,8 @@
+import java.util.concurrent.Phaser;
+
 public class Starter {
+    public static final Phaser AUCTION = new Phaser(3);
+    public static final int PRICE_PATH = 100;
     public static void main(String[] args) {
         Lot[] lots = {new Lot(0, 50)};
 //                new Lot(1, 100),

@@ -22,27 +22,27 @@ public class Buyer implements Runnable{
 
 //        Auction.AUCTION.register();
         System.out.println(Thread.currentThread().getName() + " is registered " + " moneyLimit is " + moneyLimit);
-        do {
+            while (!(Starter.AUCTION.getRegisteredParties() - 1 == 0)) {
             currentPrice = lot.getPrice();
             System.out.println("current price is " + currentPrice);
             Thread.sleep(2000);
-            if ((currentPrice + Auction.PRICE_PATH) < moneyLimit) {
+            if ((currentPrice + Starter.PRICE_PATH) < moneyLimit) {
                 synchronized (lot) {
-                    lot.setPrice(lot.getPrice() + Auction.PRICE_PATH);
+                    lot.setPrice(lot.getPrice() + Starter.PRICE_PATH);
                 }
                 isInGame = true;
-                Auction.AUCTION.arriveAndAwaitAdvance();
+                Starter.AUCTION.arriveAndAwaitAdvance();
                 System.out.println(Thread.currentThread().getName() + " bid");
                 Thread.sleep(2000);
             }  else {
-                    Auction.AUCTION.arriveAndDeregister();
+                    Starter.AUCTION.arriveAndDeregister();
                     isInGame = false;
                 System.out.println(Thread.currentThread().getName() + " deregister");
                 Thread.sleep(2000);
                     break;
                 }
 
-            } while (!(Auction.AUCTION.getRegisteredParties() - 1 == 0));
+            }
         System.out.println(Thread.currentThread().getName() + " left auction");
         Thread.sleep(2000);
         if(isInGame) {
