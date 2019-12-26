@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -37,8 +38,13 @@ public class Buyer implements Runnable{
 
     }
 
-    public List<Lot> getWonLots() {
-        return wonLots;
+    public List<Integer> getWonLots() {
+        List<Integer> wonLotsIds = new ArrayList<>();
+        for (Lot lot : wonLots) {
+            wonLotsIds.add(lot.getLotId());
+        }
+
+        return wonLotsIds;
     }
 }
 
