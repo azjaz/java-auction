@@ -1,47 +1,50 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Phaser;
 
 public class Buyer implements Runnable{
     Random limit = new Random();
     private final int moneyLimit = limit.nextInt(1500);
     Lot lot;
+    Phaser auction;
     boolean isInGame = false;
     private int currentPrice;
     private List<Lot> wonLots = new ArrayList<>();
 
-    public Buyer(Lot lot) {
+    public Buyer(Lot lot, Phaser auction) {
         this.lot = lot;
+        this.auction = auction;
     }
 
     @Override
     public void run() {
         try {
-
-
-//        Auction.AUCTION.register();
         System.out.println(Thread.currentThread().getName() + " is registered " + " moneyLimit is " + moneyLimit);
-            while (!(Starter.AUCTION.getRegisteredParties() - 1 == 0)) {
+            while (auction.getRegisteredParties() - 1 != 0) {
             currentPrice = lot.getPrice();
             System.out.println("current price is " + currentPrice);
-            Thread.sleep(2000);
             if ((currentPrice + Starter.PRICE_PATH) < moneyLimit) {
                 synchronized (lot) {
                     lot.setPrice(lot.getPrice() + Starter.PRICE_PATH);
                 }
+                Thread.sleep(2000);
                 isInGame = true;
-                Starter.AUCTION.arriveAndAwaitAdvance();
+                auction.arriveAndAwaitAdvance();
                 System.out.println(Thread.currentThread().getName() + " bid");
-                Thread.sleep(2000);
+
             }  else {
-                    Starter.AUCTION.arriveAndDeregister();
-                    isInGame = false;
-                System.out.println(Thread.currentThread().getName() + " deregister");
-                Thread.sleep(2000);
+                if(auction.getRegisteredParties() == 1){
+                    isInGame = true;
                     break;
                 }
+                    auction.arriveAndDeregister();
+                    isInGame = false;
+                System.out.println(Thread.currentThread().getName() + " deregister");
 
+                    break;
+                }
+                Thread.sleep(2000);
             }
         System.out.println(Thread.currentThread().getName() + " left auction");
         Thread.sleep(2000);
