@@ -10,7 +10,6 @@ public class Buyer implements Runnable{
     Phaser auction;
     boolean isInGame = false;
     private int currentPrice;
-    private List<Lot> wonLots = new ArrayList<>();
 
     public Buyer(Lot lot, Phaser auction) {
         this.lot = lot;
@@ -50,19 +49,10 @@ public class Buyer implements Runnable{
         Thread.sleep(2000);
         if(isInGame) {
             lot.setPaid(true);
-            wonLots.add(lot);
             System.out.println(Thread.currentThread().getName() + " won lot!");
         }
         } catch (InterruptedException e) {e.getStackTrace();}
     }
 
-    public List<Integer> getWonLots() {
-        List<Integer> wonLotsIds = new ArrayList<>();
-        for (Lot lot : wonLots) {
-            wonLotsIds.add(lot.getLotId());
-        }
-
-        return wonLotsIds;
-    }
 }
 
